@@ -80,25 +80,32 @@ function ensureGhAvailable() {
 	}
 }
 
+function parseOwnerRepo(remoteUrl: string): string | undefined {
+	const match = remoteUrl
+		.trim()
+		.match(/github\.com[:/]([^/]+)\/(.+?)(?:\.git)?$/)
+	if (!match) return undefined
+	const [, owner, repo] = match
+	return `${owner}/${repo}`
+}
+
 function resolveRepo(explicitRepo: string | undefined): string {
 	if (explicitRepo) return explicitRepo
 
 	try {
-		const out = execFileSync(
-			"gh",
-			["repo", "view", "--json", "nameWithOwner", "-q", ".nameWithOwner"],
-			{ encoding: "utf-8" },
-		)
-		const repo = out.trim()
+		const out = execFileSync("git", ["remote", "get-url", "origin"], {
+			encoding: "utf-8",
+		})
+		const repo = parseOwnerRepo(out)
 		if (!repo) throw new Error("empty")
 		return repo
 	} catch {
 		console.error(
 			"エラー: 対象リポジトリを特定できませんでした。\n" +
-				"originリモートが設定されていないか、`gh`から認識できません。\n" +
+				"originリモートが設定されていないか、GitHubのURL形式ではありません。\n" +
 				"`--repo owner/name` を指定して実行し直してください。",
 		)
-		process.exit(1)
+		return process.exit(1)
 	}
 }
 
