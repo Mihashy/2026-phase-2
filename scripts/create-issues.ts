@@ -227,6 +227,12 @@ function ensureLabels(repo: string, difficulties: Set<Difficulty>) {
 	}
 }
 
+function enableIssue(repo: string) {
+	execFileSync("gh", ["repo", "edit", repo, "--enable-issues",], {
+		stdio: "ignore",
+	})
+}
+
 function createIssue(repo: string, def: IssueDef): string {
 	const tmpFile = join(tmpdir(), `winc-issue-${def.seq}-${Date.now()}.md`)
 	writeFileSync(tmpFile, def.body, "utf-8")
@@ -306,6 +312,9 @@ async function main() {
 	const difficulties = new Set(defs.map((d) => d.difficulty))
 	console.log("\nラベルを準備しています...")
 	ensureLabels(repo, difficulties)
+
+	console.log("\nIssueを有効化しています...")
+	enableIssue(repo)
 
 	console.log("\nIssueを作成しています...")
 	const succeeded: string[] = []
