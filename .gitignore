@@ -7,6 +7,4 @@
 
 # SQLite
 *.db
-
-# 環境変数
 .env
