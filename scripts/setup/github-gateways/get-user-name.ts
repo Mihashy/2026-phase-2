@@ -13,4 +13,5 @@ export async function getGitHubUserName() {
 		"GitHubのユーザーログインIDを取得しました。",
 		`LOGIN ID : ${userName}`,
 	])
+	return userName
 }
