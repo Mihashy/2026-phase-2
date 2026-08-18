@@ -33,15 +33,17 @@ export async function createLabels(userName: string) {
 	}
 
 	logInfo("ラベルを作成しています...")
-	const promises = [...nonExistentLabelSet].map((label) => {
-		return $`gh api --method POST /repos/${userName}/${GITHUB_REPO_NAME}/labels -f 'name='${label}' -f 'description=${LABEL_DESCRIPTIONS[label]}' -f 'color=${LABEL_COLORS[label]}'`.quiet()
-	})
-
-	try {
-		await Promise.all([promises])
-	} catch {
-		logError("ラベルの作成に失敗しました。")
-		process.exit(1)
+	// 並列にするとなぜか失敗する
+	for (const label of [...nonExistentLabelSet]) {
+		const result =
+			await $`gh api --method POST /repos/${userName}/${GITHUB_REPO_NAME}/labels -f 'name=${label}' -f 'description=${LABEL_DESCRIPTIONS[label]}' -f 'color=${LABEL_COLORS[label]}'`
+				.quiet()
+				.nothrow()
+		if (result.exitCode !== 0) {
+			logError(`ラベル「${label}」の作成に失敗しました。`)
+			process.exit(1)
+		}
+		logInfo(`ラベル「${label}」を作成しました。`)
 	}
 
 	logInfo("ラベルの作成を完了しました。")
