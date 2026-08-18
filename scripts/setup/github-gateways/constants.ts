@@ -8,10 +8,10 @@ export const LABEL_NAMES = ["EASY", "NORMAL", "HARD", "EXTREME"] as const
 type LabelName = (typeof LABEL_NAMES)[number]
 
 export const LABEL_COLORS: Record<LabelName, string> = {
-	EASY: "07C051",
-	NORMAL: "05ADCA",
-	HARD: "EE6B0E",
-	EXTREME: "834DE7",
+	EASY: "047D39",
+	NORMAL: "067FC2",
+	HARD: "E6500F",
+	EXTREME: "7422E7",
 }
 
 export const LABEL_DESCRIPTIONS: Record<LabelName, string> = {
