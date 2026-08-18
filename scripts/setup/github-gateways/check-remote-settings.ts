@@ -101,3 +101,13 @@ export async function checkRemoteUpstreamSettings() {
 		`repo : ${repo}`,
 	])
 }
+
+export async function setRemoteRepoDefault() {
+	const shellResult = await $`gh repo set-default origin`.quiet().nothrow()
+	if (shellResult.exitCode !== 0) {
+		logError("デフォルトリポジトリの設定に失敗しました。")
+		process.exit(1)
+	}
+
+	logInfo("デフォルトリポジトリをoriginに設定しました。")
+}
