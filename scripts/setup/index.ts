@@ -1,3 +1,4 @@
+import { setRemoteRepoDefault } from "./github-gateways/check-remote-settings"
 import { ensureGitHubCliAvailable } from "./github-gateways/ensure-cli-available"
 import { getGitHubUserName } from "./github-gateways/get-user-name"
 
@@ -6,6 +7,7 @@ async function main() {
 	const userName = await getGitHubUserName()
 	// await checkRemoteOriginSettings(userName)
 	// await checkRemoteUpstreamSettings()
+	await setRemoteRepoDefault()
 }
 
 main()
