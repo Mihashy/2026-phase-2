@@ -1,7 +1,9 @@
-import { ensureGitHubCliAvailable } from "./github-gateways/ensure-cli-available";
+import { ensureGitHubCliAvailable } from "./github-gateways/ensure-cli-available"
+import { getGitHubUserName } from "./github-gateways/get-user-name"
 
 async function main() {
-  await ensureGitHubCliAvailable()
+	await ensureGitHubCliAvailable()
+	const userName = await getGitHubUserName()
 }
 
 main()
