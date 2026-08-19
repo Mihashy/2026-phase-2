@@ -89,7 +89,7 @@ export async function updateIssues(userName: string) {
 
 export async function fetchExistingIssueInfo(userName: string) {
 	const shellResult =
-		await $`gh api /repos/${userName}/${GITHUB_REPO_NAME}/issues | jq 'map({number: .number, title})'`
+		await $`gh api --paginate /repos/${userName}/${GITHUB_REPO_NAME}/issues -f state=all -f per_page=100 | jq -s 'add | map({number: .number, title})'`
 			.quiet()
 			.nothrow()
 	if (shellResult.exitCode !== 0) {
@@ -103,7 +103,7 @@ export async function fetchExistingIssueInfo(userName: string) {
 	const objectParser = v.pipe(
 		v.object({ number: v.number(), title: v.string() }),
 		v.rawTransform(({ dataset, addIssue, NEVER }) => {
-			const regExpResult = dataset.value.title.match(/^#(\d+?).+$/)
+			const regExpResult = dataset.value.title.match(/^#(\d+)\s/)
 			if (regExpResult === null) {
 				addIssue({ message: "有効なタイトルの形式ではありません" })
 				return NEVER

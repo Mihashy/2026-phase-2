@@ -1,5 +1,5 @@
 import { $ } from "bun"
-import { logInfo } from "../utils/logger"
+import { logError, logInfo } from "../utils/logger"
 import { GITHUB_REPO_NAME, MENTORS } from "./constants"
 
 export async function inviteMentor(userName: string) {
@@ -21,7 +21,7 @@ export async function inviteMentor(userName: string) {
 	try {
 		await Promise.all(promises)
 	} catch {
-		logInfo("メンターの招待に失敗しました。")
+		logError("メンターの招待に失敗しました。")
 		process.exit(1)
 	}
 

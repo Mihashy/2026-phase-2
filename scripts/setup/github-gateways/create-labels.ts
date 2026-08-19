@@ -33,7 +33,7 @@ export async function createLabels(userName: string) {
 	}
 
 	logInfo("ラベルを作成しています...")
-	// 並列にするとなぜか失敗する
+	// GitHub APIのセカンダリレート制限に引っかかるため直列で実行する
 	for (const label of [...nonExistentLabelSet]) {
 		const result =
 			await $`gh api --method POST /repos/${userName}/${GITHUB_REPO_NAME}/labels -f 'name=${label}' -f 'description=${LABEL_DESCRIPTIONS[label]}' -f 'color=${LABEL_COLORS[label]}'`
