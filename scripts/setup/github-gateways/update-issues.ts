@@ -89,7 +89,7 @@ export async function updateIssues(userName: string) {
 
 export async function fetchExistingIssueInfo(userName: string) {
 	const shellResult =
-		await $`gh api --paginate /repos/${userName}/${GITHUB_REPO_NAME}/issues -f state=all -f per_page=100 | jq -s 'add | map({number: .number, title})'`
+		await $`gh api --method GET --paginate /repos/${userName}/${GITHUB_REPO_NAME}/issues -f state=all -f per_page=100 | jq -s 'add | map({number: .number, title})'`
 			.quiet()
 			.nothrow()
 	if (shellResult.exitCode !== 0) {
