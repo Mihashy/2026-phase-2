@@ -1,6 +1,6 @@
 ---
 seq: 3
-difficulty: Easy
+difficulty: NORMAL
 title: 通知の表示が`useEffect`で囲われていない
 ---
 
@@ -13,11 +13,11 @@ Reactの`useEffect`フックは、Reactと関係のない作用（副作用）�
 
 ```tsx
 export default function RootLayout({ loaderData }: Route.ComponentProps) {
-	if (loaderData.toastPayload) {
-		// 副作用
-		showToast(loaderData.toastPayload)
-	}
-	// ...
+ if (loaderData.toastPayload) {
+  // 副作用
+  showToast(loaderData.toastPayload)
+ }
+ // ...
 }
 ```
 
@@ -47,7 +47,7 @@ import { useEffect } from "react"
 
 ```tsx
 useEffect(() => {
-	// ここに処理
+ // ここに処理
 }, [/* ここが依存配列 */])
 ```
 
@@ -55,6 +55,7 @@ useEffect(() => {
 
 > [!note]
 > 依存配列は「この値が変わったときだけ、もう一度実行してね」という指示です。
+>
 > - 空配列`[]`にすると、最初の1回だけ実行されます
 > - 何も渡さないと、再レンダリングのたびに毎回実行されます
 >

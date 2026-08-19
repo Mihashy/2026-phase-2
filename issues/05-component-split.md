@@ -1,7 +1,7 @@
 ---
 seq: 5
-difficulty: Normal
-title: `application.tsx`のコンポーネントが肥大化している
+difficulty: HARD
+title: "`application.tsx`のコンポーネントが肥大化している"
 ---
 
 過剰に肥大化したファイルは読みづらいです。
