@@ -37,6 +37,60 @@ bun run dev
 
 切り出すときに、そのコンポーネントが動くために**外から何を受け取る必要があるか**を考えてください。それがpropsになります。
 
+たとえば「有効なリンク」の一覧（の一部）を切り出す場合、こういう流れになります。
+
+**分割前**（`LiveApplicationPage`の中に直接書かれている）
+
+```tsx
+export default function LiveApplicationPage({
+ loaderData: { availableApplicationsWithUrl },
+}: Route.ComponentProps) {
+ return (
+  <Card>
+   <CardHeader>
+    <CardTitle>有効なリンク</CardTitle>
+   </CardHeader>
+   <CardContent>
+    {availableApplicationsWithUrl.map((apl) => (
+     <div key={apl.id}>{apl.name}</div>
+    ))}
+   </CardContent>
+  </Card>
+ )
+}
+```
+
+**分割後**（新しい関数`AvailableApplicationList`に切り出す）
+
+```tsx
+function AvailableApplicationList({
+ applications,
+}: {
+ applications: LiveApplicationWithUrl[]
+}) {
+ return (
+  <Card>
+   <CardHeader>
+    <CardTitle>有効なリンク</CardTitle>
+   </CardHeader>
+   <CardContent>
+    {applications.map((apl) => (
+     <div key={apl.id}>{apl.name}</div>
+    ))}
+   </CardContent>
+  </Card>
+ )
+}
+
+export default function LiveApplicationPage({
+ loaderData: { availableApplicationsWithUrl },
+}: Route.ComponentProps) {
+ return <AvailableApplicationList applications={availableApplicationsWithUrl} />
+}
+```
+
+`availableApplicationsWithUrl`という配列がないと`AvailableApplicationList`は描画できないので、`applications`というpropsとして渡しています。実際の一覧には`onClick`のハンドラなど他にも必要な値があるので、同じ考え方で1つずつpropsに追加していってください。
+
 <details>
 <summary>ヒント：何をpropsで渡す？</summary>
 

@@ -80,3 +80,7 @@ bun run typecheck
 「一瞬なにも表示されない時間」が無くなるのがポイントです。
 
 </details>
+
+## 参考文献
+
+- [Data Loading | React Router](https://reactrouter.com/start/framework/data-loading) — `loader`によるデータ取得の公式ドキュメント
