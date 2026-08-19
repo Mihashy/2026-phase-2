@@ -20,7 +20,7 @@ async function main() {
 	await checkRemoteUpstreamSettings()
 	await disableRemoteUpstreamPush()
 	await setRemoteRepoDefault()
-	await syncUpstreamMain()
+	await syncUpstreamMain(userName)
 	await applyRuleset(userName)
 	await inviteMentor(userName)
 	await makeCodeownersFile()

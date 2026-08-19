@@ -1,6 +1,7 @@
 import { $, file } from "bun"
 import { logError, logInfo } from "../utils/logger"
 import { GITHUB_REPO_NAME } from "./constants"
+import { findMainProtectionRulesetId } from "./ruleset-utils"
 
 async function readRuleset() {
 	try {
@@ -15,31 +16,16 @@ async function readRuleset() {
 
 export async function applyRuleset(userName: string) {
 	logInfo("ルールセットの一覧を取得しています...")
-	const shellListResult =
-		await $`gh api /repos/${userName}/${GITHUB_REPO_NAME}/rulesets`
-			.quiet()
-			.nothrow()
+	const rulesetId = await findMainProtectionRulesetId(userName)
 
-	if (shellListResult.exitCode !== 0) {
-		logError("ルールセット一覧の取得に失敗しました。")
-		process.exit(1)
-	}
-
-	const targetRule = (
-		JSON.parse(shellListResult.text().trim()) as {
-			name: string
-			id: number
-		}[]
-	).find((rule) => rule.name === "main-protection")
-
-	const isExisting = targetRule !== undefined
+	const isExisting = rulesetId !== undefined
 
 	if (isExisting) {
 		logInfo([
 			"既存のルールセットがあることが確認されました。",
 			"内容を更新します...",
 		])
-		const id = targetRule.id
+		const id = rulesetId
 		const ruleset = await readRuleset()
 		const shellUpdateResult =
 			await $`echo '${ruleset}' | gh api --method PUT /repos/${userName}/${GITHUB_REPO_NAME}/rulesets/${id} --input -`
