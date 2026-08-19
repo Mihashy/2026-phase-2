@@ -41,6 +41,8 @@ bun run dev
 cp .env.example .env
 ```
 
+`cp`コマンドは必須ではありません。エディタやファイラーで`.env.example`を複製・リネームしても構いません。
+
 `JWT_SECRET`と`SESSION_SECRET`の値はまだ空になっています。次のステップで値を埋めていきます。
 
 > [!note]
