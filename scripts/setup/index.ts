@@ -9,6 +9,7 @@ import { ensureGitHubCliAvailable } from "./github-gateways/ensure-cli-available
 import { getGitHubUserName } from "./github-gateways/get-user-name"
 import { inviteMentor } from "./github-gateways/invite-mentor"
 import { makeCodeownersFile } from "./github-gateways/make-codeowners-file"
+import { enableIssues, updateIssues } from "./github-gateways/update-issues"
 
 async function main() {
 	await ensureGitHubCliAvailable()
@@ -20,6 +21,8 @@ async function main() {
 	await inviteMentor(userName)
 	await makeCodeownersFile()
 	await createLabels(userName)
+	await enableIssues(userName)
+	await updateIssues(userName)
 }
 
 main()
