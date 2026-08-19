@@ -2,6 +2,7 @@ import { applyRuleset } from "./github-gateways/apply-ruleset"
 import {
 	checkRemoteOriginSettings,
 	checkRemoteUpstreamSettings,
+	disableRemoteUpstreamPush,
 	setRemoteRepoDefault,
 } from "./github-gateways/check-remote-settings"
 import { createLabels } from "./github-gateways/create-labels"
@@ -16,6 +17,7 @@ async function main() {
 	const userName = await getGitHubUserName()
 	await checkRemoteOriginSettings(userName)
 	await checkRemoteUpstreamSettings()
+	await disableRemoteUpstreamPush()
 	await setRemoteRepoDefault()
 	await applyRuleset(userName)
 	await inviteMentor(userName)

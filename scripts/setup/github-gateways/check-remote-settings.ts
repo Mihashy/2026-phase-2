@@ -102,6 +102,19 @@ export async function checkRemoteUpstreamSettings() {
 	])
 }
 
+export async function disableRemoteUpstreamPush() {
+	const shellResult = await $`git remote set-url --push upstream DISABLED`
+		.quiet()
+		.nothrow()
+
+	if (shellResult.exitCode !== 0) {
+		logError("リモート「upstream」へのプッシュ無効化に失敗しました。")
+		process.exit(1)
+	}
+
+	logInfo("リモート「upstream」へのプッシュを無効化しました。")
+}
+
 export async function setRemoteRepoDefault() {
 	const shellResult = await $`gh repo set-default origin`.quiet().nothrow()
 	if (shellResult.exitCode !== 0) {
