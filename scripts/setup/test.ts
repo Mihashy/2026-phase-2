@@ -1,6 +1,6 @@
 // await createLabels("Hattori-1104")
 
-import { fetchExistingIssueInfo } from "./github-gateways/update-issues"
+import { updateIssues } from "./github-gateways/update-issues"
 
 // const issue0 = file("./issues/01-env.md")
 // console.log(matter(await issue0.text()).data)
@@ -19,4 +19,4 @@ import { fetchExistingIssueInfo } from "./github-gateways/update-issues"
 
 // await updateIssues("Hattori-1104")
 
-console.log(await fetchExistingIssueInfo("Hattori-1104"))
+await updateIssues("Hattori-1104")

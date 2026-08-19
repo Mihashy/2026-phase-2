@@ -25,6 +25,18 @@ const IssueFrontMatterSchema = v.object({
 
 const issueFileNameRegExp = /^(\d{2})-([a-z-]+)\.md$/
 
+export async function enableIssues(userName: string) {
+	const shellResult =
+		await $`gh api --method PATCH /repos/${userName}/${GITHUB_REPO_NAME} -f has_issues=true`
+			.quiet()
+			.nothrow()
+	if (shellResult.exitCode !== 0) {
+		logError("Issueの有効化に失敗しました。")
+		process.exit(1)
+	}
+	logInfo("Issueを有効化しました。")
+}
+
 export async function updateIssues(userName: string) {
 	const existingIssueInfo = await fetchExistingIssueInfo(userName)
 
@@ -33,13 +45,51 @@ export async function updateIssues(userName: string) {
 		const validationResult = await validateIssueFile(file)
 		if (validationResult === null) {
 			logInfo(`「${file}」はスキップされました。`)
+			continue
 		}
+		const existing = existingIssueInfo.find(
+			(info) => info.seq === validationResult.seq,
+		)
+		const newIssue: Issue = {
+			title: `#${validationResult.seq} ${validationResult.title}`,
+			body: validationResult.content,
+			labels: [validationResult.difficulty],
+			assignees: [userName],
+		}
+		if (existing) {
+			// 更新処理
+
+			logInfo(`Issue #${validationResult.seq} を更新しています。`)
+			const apiResult =
+				await $`echo '${JSON.stringify(newIssue)}' | gh api --method PATCH /repos/${userName}/${GITHUB_REPO_NAME}/issues/${existing.number} --input -`
+					.quiet()
+					.nothrow()
+			if (apiResult.exitCode !== 0) {
+				logError(`Issue #${validationResult.seq} の更新に失敗しました。`)
+				process.exit(1)
+			}
+			logInfo(`Issue #${validationResult.seq} を更新しました。`)
+			continue
+		}
+
+		// 新規登録処理
+
+		logInfo(`Issue #${validationResult.seq} を作成しています。`)
+		const apiResult =
+			await $`echo '${JSON.stringify(newIssue)}' | gh api --method POST /repos/${userName}/${GITHUB_REPO_NAME}/issues --input -`
+				.quiet()
+				.nothrow()
+		if (apiResult.exitCode !== 0) {
+			logError(`Issue #${validationResult.seq} の作成に失敗しました。`)
+			process.exit(1)
+		}
+		logInfo(`Issue #${validationResult.seq} を作成しました。`)
 	}
 }
 
 export async function fetchExistingIssueInfo(userName: string) {
 	const shellResult =
-		await $`gh api /repos/${userName}/${GITHUB_REPO_NAME}/issues | jq 'map({id, title})'`
+		await $`gh api /repos/${userName}/${GITHUB_REPO_NAME}/issues | jq 'map({number: .number, title})'`
 			.quiet()
 			.nothrow()
 	if (shellResult.exitCode !== 0) {
@@ -47,9 +97,11 @@ export async function fetchExistingIssueInfo(userName: string) {
 		process.exit(1)
 	}
 
-	const jsonParser = v.array(v.object({ id: v.number(), title: v.string() }))
+	const jsonParser = v.array(
+		v.object({ number: v.number(), title: v.string() }),
+	)
 	const objectParser = v.pipe(
-		v.object({ id: v.number(), title: v.string() }),
+		v.object({ number: v.number(), title: v.string() }),
 		v.rawTransform(({ dataset, addIssue, NEVER }) => {
 			const regExpResult = dataset.value.title.match(/^#(\d+?).+$/)
 			if (regExpResult === null) {
@@ -58,7 +110,7 @@ export async function fetchExistingIssueInfo(userName: string) {
 			}
 			const seq = Number(regExpResult[1])
 			return {
-				id: dataset.value.id,
+				number: dataset.value.number,
 				seq,
 			}
 		}),
@@ -70,7 +122,7 @@ export async function fetchExistingIssueInfo(userName: string) {
 		process.exit(1)
 	}
 
-	const issuesInfo: { id: number; seq: number }[] = []
+	const issuesInfo: { number: number; seq: number }[] = []
 
 	for (const issueInfo of jsonParseResult.output) {
 		const objectParseResult = v.safeParse(objectParser, issueInfo)
