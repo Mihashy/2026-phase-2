@@ -1,6 +1,6 @@
 ---
 seq: 7
-difficulty: Hard
+difficulty: EXTREME
 title: 早稲田メールアドレスのバリデーションがない
 ---
 
@@ -51,14 +51,14 @@ bun run dev
 import * as v from "valibot"
 
 const MailSchema = v.pipe(
-	v.string(),
-	v.email("メールアドレスの形式が正しくありません"),
-	// ここに「早稲田メールであること」のルールを足す
+ v.string(),
+ v.email("メールアドレスの形式が正しくありません"),
+ // ここに「早稲田メールであること」のルールを足す
 )
 
 const result = v.safeParse(MailSchema, mail)
 if (!result.success) {
-	// エラーのときの処理
+ // エラーのときの処理
 }
 ```
 

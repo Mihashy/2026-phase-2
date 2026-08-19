@@ -1,6 +1,6 @@
 ---
 seq: 4
-difficulty: Easy
+difficulty: NORMAL
 title: フォーマッター・リンターが導入されていない
 ---
 

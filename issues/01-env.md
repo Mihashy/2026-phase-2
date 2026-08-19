@@ -1,6 +1,6 @@
 ---
 seq: 1
-difficulty: Easy
+difficulty: EASY
 title: 環境変数がレポジトリ上に公開されている
 ---
 
