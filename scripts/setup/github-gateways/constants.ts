@@ -5,7 +5,7 @@ export const MENTORS = ["Hattori-1104"]
 
 export const LABEL_NAMES = ["EASY", "NORMAL", "HARD", "EXTREME"] as const
 
-type LabelName = (typeof LABEL_NAMES)[number]
+export type LabelName = (typeof LABEL_NAMES)[number]
 
 export const LABEL_COLORS: Record<LabelName, string> = {
 	EASY: "047D39",
