@@ -138,3 +138,12 @@ VSCodeの拡張機能タブ（左のサイドバー）で`biomejs.biome`を検�
 
 このファイルを作って、Biomeを推奨に入れましょう。
 うまくいくと、リポジトリを開いたときにVSCodeが「おすすめの拡張機能があります」と教えてくれるようになります。
+
+## 7 達成条件
+
+- [ ] `package.json`の`scripts`に`check`・`check:write`が追加され、`bun run check` / `bun run check:write`が実行できる
+- [ ] VSCodeにBiome拡張機能（`biomejs.biome`）が導入され、保存時に自動整形される
+
+### 発展（任意）
+
+- [ ] `.vscode/extensions.json`が作成され、Biomeが推奨拡張機能として登録されている
