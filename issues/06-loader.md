@@ -84,3 +84,10 @@ bun run typecheck
 ## 参考文献
 
 - [Data Loading | React Router](https://reactrouter.com/start/framework/data-loading) — `loader`によるデータ取得の公式ドキュメント
+
+## 5 達成条件
+
+- [ ] `app/routes/home.tsx`のメッセージ取得処理が`useEffect`+`fetch`ではなく`loader`関数に移されている
+- [ ] `useState`・`useEffect`のimportが不要になり削除されている
+- [ ] `bun run typecheck`が通る
+- [ ] トップページを開いたとき、メッセージが最初から表示される（読み込み後に一瞬空白になる時間が無い）

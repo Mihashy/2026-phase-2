@@ -157,3 +157,9 @@ export default function RootLayout({ loaderData }: Route.ComponentProps) {
 依存配列には`loaderData.toastPayload`を入れます。これにより「通知の内容が変わったとき」だけ`showToast`が再実行されるようになり、レンダリング中に副作用が紛れ込む問題も解消されます。
 
 </details>
+
+## 4 達成条件
+
+- [ ] `app/routes/root-layout.tsx`で、`showToast`の呼び出しがレンダリング中の直接実行ではなく`useEffect`の中に移動されている
+- [ ] `useEffect`の依存配列が、通知内容（`loaderData.toastPayload`など）の変化に応じて実行されるよう適切に設定されている
+- [ ] 新規登録（`/auth/register`）を行うと、通知が正しく表示される（連続で出たり出なかったりしない）

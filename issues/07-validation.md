@@ -172,3 +172,12 @@ const result = v.safeParse(MailSchema, mail)
 - `aaa` → 登録できない
 - `test@gmail.com` → 登録できない
 - 調べた早稲田メールのドメイン（`@fuji.waseda.jp`、`@asagi.waseda.jp`など） → 登録できる
+
+## 9 達成条件
+
+- [ ] `register.tsx`・`login.tsx`の両方で、`.waseda.jp`で終わらないメールアドレス（`aaa`、`test@gmail.com`など）では登録・ログインできない
+- [ ] バリデーションに失敗した場合、既存のエラー表示の仕組み（`fail()` + 新しいエラークラス + `FieldError`）でユーザーにエラーメッセージが表示される
+
+### 発展（任意）
+
+- [ ] 調べた実在の早稲田メールドメイン（`@fuji.waseda.jp`、`@asagi.waseda.jp`など）でも登録できる
