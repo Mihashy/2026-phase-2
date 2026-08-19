@@ -1,6 +1,6 @@
 ---
 seq: 6
-difficulty: Hard
+difficulty: HARD
 title: データ取得が`useEffect`+`fetch`のままになっている
 ---
 
@@ -14,13 +14,13 @@ React Routerのルール上、APIからのデータの取得は`loader`という
 
 ```tsx
 export default function TopPage() {
-	const [message, setMessage] = useState<string | null>(null)
-	useEffect(() => {
-		fetch(`${window.location.origin}/api/hello-react-router`)
-			.then((res) => res.json())
-			.then((json) => setMessage(json.message))
-	}, [])
-	// ...
+ const [message, setMessage] = useState<string | null>(null)
+ useEffect(() => {
+  fetch(`${window.location.origin}/api/hello-react-router`)
+   .then((res) => res.json())
+   .then((json) => setMessage(json.message))
+ }, [])
+ // ...
 }
 ```
 
@@ -32,14 +32,14 @@ Phase 1で書いたのと同じ形ですね。叩いているAPIの実体は`app
 
 ```tsx
 export async function loader({ context }: Route.LoaderArgs) {
-	// ... データを取ってくる
-	return { lives }
+ // ... データを取ってくる
+ return { lives }
 }
 
 export default function AppHomePage({
-	loaderData: { lives },
+ loaderData: { lives },
 }: Route.ComponentProps) {
-	// loaderが返した値を、propsとして受け取れている
+ // loaderが返した値を、propsとして受け取れている
 }
 ```
 

@@ -1,6 +1,6 @@
 ---
 seq: 2
-difficulty: Easy
+difficulty: EASY
 title: トップページから各ページへの導線がない
 ---
 
