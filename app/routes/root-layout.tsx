@@ -23,7 +23,9 @@ export default function RootLayout({ loaderData }: Route.ComponentProps) {
 	if (loaderData.toastPayload) {
 		// 副作用
 		useEffect (() => {
-			showToast
+			if(loaderData.toastPayload !==undefined){
+			showToast(loaderData.toastPayload)
+			}
 		}, [loaderData.toastPayload])
 	}
 
